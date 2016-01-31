@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kevin Cheng - FabAcademy 2016</title>
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="js/voxelcss.js"></script>
+    <link rel='stylesheet' href="css/voxel.css"></link>
+</head>
+<body>
+    <div class="container" style="col-md-6 col-md-offset-3">
+        <div id="content-area">
+            <div id="content">
+            </div>
+        </div>
+        <div id="cube"></div>
+    </div>
+
+    <script>
+        var PI = Math.PI;
+        var scene = new voxelcss.Scene();
+        var lightSource = new voxelcss.LightSource(-300, 300, 300, 750, 0.3, 1);
+        var world = new voxelcss.World(scene);
+        
+        scene.rotate(-PI / 5, -PI / 4, 0);
+        scene.attach(document.getElementById("cube"));
+        scene.addLightSource(lightSource);
+
+        var vox1 = new voxelcss.Voxel(0, 0, 0, 200, {
+            mesh: new voxelcss.Mesh({
+                top:new voxelcss.ImageFace("img/fab-logo.png"),
+                bottom:new voxelcss.ImageFace("img/main.png"),
+                front:new voxelcss.ImageFace("img/questionMark.png"),
+                back:new voxelcss.ImageFace("img/main.png"),
+                left:new voxelcss.ImageFace("img/main.png"),
+                right:new voxelcss.ImageFace("img/1.png")})
+        });
+
+        world.add(vox1);
+        vox1.addEventListener('TopClick', function(event){
+            console.log("top click!");
+        });
+        vox1.addEventListener('FrontClick', function(event){
+            console.log("front click!");
+        });
+        vox1.addEventListener('RightClick', function(event){
+            console.log("right click!");
+        });
+        vox1.addEventListener('VoxelClick', function(event){
+            console.log("Click!");
+        });
+
+        $(document.body).on("click","#closeButton",function() {
+            $('#content-area').hide();
+            console.log('show!');
+        });
+
+    </script>
+</body>
+</html>
