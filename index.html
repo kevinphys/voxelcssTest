@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Kevin Cheng - FabAcademy 2016</title>
     <!--[if lt IE 9]>
@@ -7,60 +8,99 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
-
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
     <script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
     <script type="text/javascript" src="js/voxelcss.js"></script>
     <link rel='stylesheet' href="css/voxel.css"></link>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
+
 <body>
-    <div class="container" style="col-md-6 col-md-offset-3">
-        <div id="content-area">
-            <div id="content">
-            </div>
+    <div class="contentArea" style="display:none;">
+        <button id="backToCube" type="button" class="btn btn-default">Back</button>
+        <div id="content">
         </div>
-        <div id="cube"></div>
     </div>
-
+    <div class="container">
+        <div id="cube"></div>
+        <div class="name" style="text-align:center; color:rgba(0,0,0,0.35); position:absolute; bottom:15%; left:0px; width:100%; font-size:18px; ">Kevin Cheng</div>
+        <div class="title" style="text-align:center; color:rgba(0,0,0,0.35); position:absolute; bottom:0px; left:0px; width:100%; font-size:12.5px; ">FabAcademy 2016 @Fablab Taipei, Taiwan</div>
+    </div>
     <script>
-        var PI = Math.PI;
-        var scene = new voxelcss.Scene();
-        var lightSource = new voxelcss.LightSource(-300, 300, 300, 750, 0.3, 1);
-        var world = new voxelcss.World(scene);
-        
-        scene.rotate(-PI / 5, -PI / 4, 0);
-        scene.attach(document.getElementById("cube"));
-        scene.addLightSource(lightSource);
+    var PI = Math.PI;
+    var scene = new voxelcss.Scene();
+    var lightSource = new voxelcss.LightSource(-300, 300, 300, 750, 0.3, 1);
+    var world = new voxelcss.World(scene);
 
-        var vox1 = new voxelcss.Voxel(0, 0, 0, 200, {
-            mesh: new voxelcss.Mesh({
-                top:new voxelcss.ImageFace("img/fab-logo.png"),
-                bottom:new voxelcss.ImageFace("img/main.png"),
-                front:new voxelcss.ImageFace("img/questionMark.png"),
-                back:new voxelcss.ImageFace("img/main.png"),
-                left:new voxelcss.ImageFace("img/main.png"),
-                right:new voxelcss.ImageFace("img/1.png")})
-        });
+    var vox1 = new voxelcss.Voxel(0, 0, 0, 200, {
+        mesh: new voxelcss.Mesh({
+            top: new voxelcss.ImageFace("img/fab-logo.png"),
+            bottom: new voxelcss.ImageFace("img/main.png"),
+            front: new voxelcss.ImageFace("img/A.png"),
+            back: new voxelcss.ImageFace("img/main.png"),
+            left: new voxelcss.ImageFace("img/main.png"),
+            right: new voxelcss.ImageFace("img/1.png")
+        })
+    });
 
-        world.add(vox1);
-        vox1.addEventListener('TopClick', function(event){
-            console.log("top click!");
-        });
-        vox1.addEventListener('FrontClick', function(event){
-            console.log("front click!");
-        });
-        vox1.addEventListener('RightClick', function(event){
-            console.log("right click!");
-        });
-        vox1.addEventListener('VoxelClick', function(event){
-            console.log("Click!");
-        });
+    scene.rotate(-PI / 5, -PI / 4, 0);
+    scene.attach(document.getElementById("cube"));
+    scene.addLightSource(lightSource);
 
-        $(document.body).on("click","#closeButton",function() {
-            $('#content-area').hide();
-            console.log('show!');
-        });
+    world.add(vox1);
 
+    vox1.addEventListener('TopClick', function(event) {
+        console.log("top click!");
+    });
+    vox1.addEventListener('FrontClick', function(event) {
+        // console.log("front click!");
+        renderPage("about/index.html");
+        $('.container').hide();
+    });
+    vox1.addEventListener('RightClick', function(event) {
+        // console.log("right click!");
+        renderPage("week1/index.html");
+        $('.container').hide();
+    });
+    // vox1.addEventListener('VoxelClick', function(event) {
+    //     console.log("Click!");
+    // });
+
+    $(document.body).on("click", "#backToCube", function() {
+        $('.contentArea').hide();
+        $('.container').show();
+    });
+
+    function renderPage(path) {
+        $("#content").html("");
+        $.ajax({
+                type: "GET",
+                cache: false,
+                url: path,
+                dataType: "html",
+                contentType: "text/html"
+            })
+            .done(function(html) {
+                $("#content").html(html);
+                // console.log(html);
+
+                var style = $(html).filter("style").get();
+                $(document.getElementsByTagName("head")[0]).append(style);
+
+                // ---> Have to unsolve "markdown editor script cannot run problem"
+                // $(html).filter("script").contents().each(function() {
+                //     $.globalEval(this.nodeValue);
+                // });
+
+                $(".contentArea").show();
+            });
+    }
     </script>
+    <style>
+    body {
+        background-color: #F0F0F0
+    }
+    </style>
 </body>
+
 </html>
